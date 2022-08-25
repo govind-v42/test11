@@ -1,0 +1,16 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python train-test.py data/data.csv
+    deps:
+    - path: data/data.csv
+      md5: df952449d6f9b5f9fdfe3fc53ddef7ca
+      size: 238803811
+    - path: train-test.py
+      md5: cfa45635be73916e04f15a5ea1bfc860
+      size: 1403
+    outs:
+    - path: split-data
+      md5: 92bd59dfa5e4d570ea079ac440eac2ad.dir
+      size: 13929581
+      nfiles: 4

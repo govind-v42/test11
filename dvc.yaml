@@ -1,0 +1,8 @@
+stages:
+  split:
+    cmd: python train-test.py data/data.csv
+    deps:
+    - data/data.csv
+    - train-test.py
+    outs:
+    - split-data
