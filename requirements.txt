@@ -1,0 +1,8 @@
+dvc
+pandas
+sklearn
+numpy
+seaborn
+matplotlib
+nltk
+flask

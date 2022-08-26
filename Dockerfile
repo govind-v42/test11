@@ -1,0 +1,46 @@
+FROM python:3.10.6-buster as pipeline
+
+
+
+RUN mkdir dvc_pipeline
+
+COPY data/data2.csv dvc_pipeline/data/data2.csv
+
+COPY train-test.py dvc_pipeline/train-test.py
+
+COPY app.py dvc_pipeline/app.py
+
+COPY requirements.txt dvc_pipeline/requirements.txt 
+
+COPY dvc.yaml dvc_pipeline/dvc.yaml
+
+WORKDIR /dvc_pipeline
+
+RUN pip install -r requirements.txt
+
+
+
+
+RUN dvc init --no-scm
+RUN dvc repro
+
+
+#STAGE 2 docker: webapp
+
+FROM python:3.10.6-buster
+
+RUN  mkdir -p web_app
+
+COPY  app.py web_app/app.py
+COPY  finalized_model.pkl web_app/finalized_model.pkl
+
+COPY requirements.txt   web_app/requirements.txt
+
+WORKDIR /web_app
+RUN pip install -r requirements.txt
+
+
+EXPOSE 5000
+CMD ["python", "app.py"]
+
+# RUN pip install flask

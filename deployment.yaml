@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dvc
+  labels:
+    tier: application
+
+spec:
+
+  replicas: 3
+
+  selector:
+    matchLabels:
+      run: dvc
+   
+  template:
+    metadata:
+      labels:
+        run: dvc
+    spec:
+      containers:
+      - name: dvc
+        image: govindv42/myrepo:model3.1
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dvc
+  labels:
+    tier: application
+spec:
+
+  selector:
+    run: dvc
+    
+  type: LoadBalancer
+
+  
+  ports:
+  - port: 5001
+    targetPort: 5000
