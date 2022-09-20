@@ -4,7 +4,7 @@ FROM python:3.10.6-buster as pipeline
 
 RUN mkdir dvc_pipeline
 
-COPY data/data2.csv dvc_pipeline/data/data2.csv
+COPY data/data2.csv dvc_pipeline/data/data3.csv
 
 COPY train-test.py dvc_pipeline/train-test.py
 
@@ -31,8 +31,13 @@ FROM python:3.10.6-buster
 
 RUN  mkdir -p web_app
 
+COPY  finalized_model1.pkl  web_app/finalized_model1.pkl
+COPY  feature1.pkl  web_app/feature1.pkl
+
 COPY  app.py web_app/app.py
-COPY  finalized_model.pkl web_app/finalized_model.pkl
+COPY  templates web_app/templates
+
+
 
 COPY requirements.txt   web_app/requirements.txt
 

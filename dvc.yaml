@@ -1,8 +1,16 @@
 stages:
   split:
-    cmd: python train-test.py data/data.csv
+    cmd: python train-test.py data/data3.csv
     deps:
-    - data/data.csv
+    - data/data3.csv
     - train-test.py
     outs:
-    - split-data
+    - finalized_model1.pkl
+    - feature1.pkl
+
+  # webapp:
+  #   cmd: python app.py finalized_model1.pkl feature1.pkl
+  #   deps:
+  #   - finalized_model1.pkl
+  #   - feature1.pkl
+  #   - app.py

@@ -1,8 +1,9 @@
 dvc
 pandas
-sklearn
+sklearn 
 numpy
 seaborn
 matplotlib
 nltk
 flask
+mlflow

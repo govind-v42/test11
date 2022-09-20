@@ -1,16 +1,30 @@
 schema: '2.0'
 stages:
   split:
-    cmd: python train-test.py data/data.csv
+    cmd: python train-test.py data/data3.csv
     deps:
-    - path: data/data.csv
-      md5: df952449d6f9b5f9fdfe3fc53ddef7ca
-      size: 238803811
+    - path: data/data3.csv
+      md5: b7f18e15c765946df696fd7095169cb9
+      size: 137924
     - path: train-test.py
-      md5: cfa45635be73916e04f15a5ea1bfc860
-      size: 1403
+      md5: e37075018c0dfa3b620512a2f5841c1f
+      size: 11010
     outs:
-    - path: split-data
-      md5: 92bd59dfa5e4d570ea079ac440eac2ad.dir
-      size: 13929581
-      nfiles: 4
+    - path: feature1.pkl
+      md5: d5b117a472d0e4b2c1e6f4e74329b2bf
+      size: 608752
+    - path: finalized_model1.pkl
+      md5: 83e00121d24f42ff78fdc684d7b13981
+      size: 440811
+  webapp:
+    cmd: python app.py finalized_model1.pkl feature1.pkl
+    deps:
+    - path: app.py
+      md5: 1e056d8707b456d4688e1ca3d66a4f38
+      size: 1720
+    - path: feature1.pkl
+      md5: 267dcb9b321bce2a4208e10600246ba5
+      size: 527112
+    - path: finalized_model1.pkl
+      md5: aba20587098654cba50f27bdaf791fbb
+      size: 382667

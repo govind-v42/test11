@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/govin/Desktop/twitter/mlruns/1/ffdf022dcc6f4b48a38cf679d0c0c225/artifacts
+end_time: 1663662608440
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: active
+name: ''
+run_id: ffdf022dcc6f4b48a38cf679d0c0c225
+run_uuid: ffdf022dcc6f4b48a38cf679d0c0c225
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1663662604014
+status: 3
+tags: []
+user_id: govin
