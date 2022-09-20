@@ -4,18 +4,18 @@ stages:
     cmd: python train-test.py data/data3.csv
     deps:
     - path: data/data3.csv
-      md5: b7f18e15c765946df696fd7095169cb9
-      size: 137924
+      md5: ab64d810729ad14618087b5662ad1546
+      size: 208383
     - path: train-test.py
-      md5: e37075018c0dfa3b620512a2f5841c1f
-      size: 11010
+      md5: 33197799d959393f9f85d3db72c1403a
+      size: 11004
     outs:
     - path: feature1.pkl
-      md5: d5b117a472d0e4b2c1e6f4e74329b2bf
-      size: 608752
+      md5: 905778b84a087a1833555f8d5dd7a415
+      size: 880230
     - path: finalized_model1.pkl
-      md5: 83e00121d24f42ff78fdc684d7b13981
-      size: 440811
+      md5: ee340eb8997fe465f85174799410606c
+      size: 635467
   webapp:
     cmd: python app.py finalized_model1.pkl feature1.pkl
     deps:
