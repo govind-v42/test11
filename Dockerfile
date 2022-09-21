@@ -4,7 +4,7 @@ FROM python:3.10.6-buster as pipeline
 
 RUN mkdir dvc_pipeline
 
-COPY data/data2.csv dvc_pipeline/data/data3.csv
+COPY data/data3.csv dvc_pipeline/data/data3.csv
 
 COPY train-test.py dvc_pipeline/train-test.py
 

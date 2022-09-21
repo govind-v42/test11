@@ -28,6 +28,7 @@ from nltk.corpus import stopwords
 import mlflow
 import mlflow.sklearn
 from sklearn.metrics import accuracy_score
+from sklearn.neighbors import KNeighborsClassifier
 
 region = "Germany West Central"
 subscription_id = "ad24f89b-ce25-48f7-89af-5f742bad090d"
@@ -51,17 +52,17 @@ if __name__ == "__main__":
     
     
     # Const
-    DATASET_COLUMNS = [ "_id", "results", "sentiment"]
+    DATASET_COLUMNS = [ "results", "sentiment","lang"]
     DATASET_ENCODING = "ISO-8859-1"
     TARGET_COL = 'sentiment'
-    CSV_PATH = 'data/data3.csv'
+    CSV_PATH = 'data/data5.csv'
     NEW_DIR = 'split-data'
     # X_TRAIN_PATH = 'split-data/X_train.csv'
     # X_TEST_PATH = 'split-data/y_train.csv'
     # Y_TRAIN_PATH = 'split-data/X_test.csv'
     # Y_TEST_PATH = 'split-data/y_test.csv'
-    TOT_SIZE = 200000
-    TEST_SIZE = 0.2
+    # TOT_SIZE = 200000
+    # TEST_SIZE = 0.2
 
     print("Read raw data")
     df = pd.read_csv(CSV_PATH, encoding=DATASET_ENCODING, names=DATASET_COLUMNS, skiprows=1)
@@ -70,7 +71,7 @@ if __name__ == "__main__":
 
     data=df[['results','sentiment']]
 
-    print(df.head())
+    # print(df.dtypes)
     # lemmatizer = WordNetLemmatizer()
     # stemmer = PorterStemmer()
     # def preprocess(sentence):
@@ -176,7 +177,7 @@ if __name__ == "__main__":
     # data_neg = data['text'][:800000]
 
     # # Separating the 95% data for training data and 5% for testing data
-    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.20, random_state =42)
+    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.20, random_state =4257)
 
 
 
@@ -202,7 +203,7 @@ if __name__ == "__main__":
 
 
 
-    vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=500000, lowercase=False)
+    vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=560000, lowercase=False)
 
     vectoriser.fit(X_train.values.astype('U'))
 
@@ -231,7 +232,13 @@ if __name__ == "__main__":
         plt.ylabel("Actual values" , fontdict = {'size':14}, labelpad = 10)
         plt.title ("Confusion Matrix", fontdict = {'size':18}, pad = 20)
         plt.show()
-
+    
+    
+    
+    # classifier = KNeighborsClassifier(n_neighbors=7,algorithm='brute') #Using brute-force algorithm for quicker computation.
+    # classifier.fit(X_train, y_train) #Fitting the built-in sklearn classifier on our training data
+    # y_pred1 = classifier.predict(X_test)
+    # model_accuracy = accuracy_score(y_test, y_pred1)
     
     BNBmodel = BernoulliNB()
     BNBmodel.fit(X_train, y_train)
@@ -260,8 +267,8 @@ if __name__ == "__main__":
     #     stem_words=[stemmer.stem(w) for w in filtered_words]
     #     lemma_words=[lemmatizer.lemmatize(w) for w in stem_words]
     #     return " ".join(lemma_words)
-
-    # y_pred2 = BNBmodel.predict(vectoriser.transform(tweet))
+    # preprocessed = preprocess(tweet)
+    # y_pred2 = BNBmodel.predict(vectoriser.transform(preprocessed))
     # print(y_pred2)
     # model_Evaluate(BNBmodel)
 

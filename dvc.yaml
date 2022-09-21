@@ -1,8 +1,16 @@
 stages:
-  split:
-    cmd: python train-test.py data/data3.csv
+  etl:
+    cmd: python etlpipeline.py data/data2.csv
     deps:
-    - data/data3.csv
+    - data/data2.csv
+    - etlpipeline.py
+    outs:
+    - data/data5.csv
+  
+  split:
+    cmd: python train-test.py data/data5.csv
+    deps:
+    - data/data5.csv
     - train-test.py
     outs:
     - finalized_model1.pkl
