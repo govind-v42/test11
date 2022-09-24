@@ -9,6 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 import pickle
 import nltk
 nltk.download('stopwords')
+nltk.download('wordnet')
 from nltk.stem import WordNetLemmatizer,PorterStemmer
 import re
 from nltk.tokenize import RegexpTokenizer
