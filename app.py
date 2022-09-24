@@ -7,6 +7,8 @@ import pandas as pd
 from sklearn.naive_bayes import BernoulliNB
 from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 import pickle
+import nltk
+nltk.download('stopwords')
 from nltk.stem import WordNetLemmatizer,PorterStemmer
 import re
 from nltk.tokenize import RegexpTokenizer
