@@ -12,9 +12,9 @@ db = cluster['NewDB']
 
 collection = db['collection']
 
-df = pd.DataFrame(list(collection.find()))
+# df = pd.DataFrame(list(collection.find()))
 
-df.to_csv('data/data3.csv', index=False)
+# df.to_csv('data/data3.csv', index=False)
 
 
 
