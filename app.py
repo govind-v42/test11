@@ -62,8 +62,8 @@ def my_form_post():
         tokens = tokenizer.tokenize(rem_num)  
         filtered_words = [w for w in tokens if len(w) > 2 if not w in stopwords.words('english')]
         stem_words=[stemmer.stem(w) for w in filtered_words]
-        lemma_words=[lemmatizer.lemmatize(w) for w in stem_words]
-        return " ".join(lemma_words)
+        # lemma_words=[lemmatizer.lemmatize(w) for w in stem_words]
+        return " ".join(stem_words)
     
     processed = preprocess(tweet)
     processed = [processed]
