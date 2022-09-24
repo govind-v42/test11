@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: dvc
-        image: govindv42/myrepo:modelnew
+        image: govindv42/myrepo:latest
         ports:
         - containerPort: 5000
 ---

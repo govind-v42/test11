@@ -177,7 +177,7 @@ if __name__ == "__main__":
     # data_neg = data['text'][:800000]
 
     # # Separating the 95% data for training data and 5% for testing data
-    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.20, random_state =4257)
+    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.20, random_state =42)
 
 
 
@@ -203,7 +203,7 @@ if __name__ == "__main__":
 
 
 
-    vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=560000, lowercase=False)
+    vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=500000, lowercase=False)
 
     vectoriser.fit(X_train.values.astype('U'))
 
