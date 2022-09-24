@@ -66,7 +66,12 @@ def my_form_post():
     processed = [processed]
     y1 = vec.transform(processed)
     prediction = model.predict(y1)
-    json_str = json.dumps({'Prediction': prediction.tolist(), 'Tweet': processed})
+    list = prediction.tolist()
+    if list[0] == 0:
+        sentiment = "Negative"
+    else:
+        sentiment = "Positive"
+    json_str = json.dumps({'Prediction': sentiment, 'Tweet': processed})
     
     return (json_str)
     
