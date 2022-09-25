@@ -39,10 +39,10 @@ FROM python:3.10.6-buster
 
 RUN  mkdir -p web_app
 
-COPY --from=pipeline finalized_model1.pkl web_app/finalized_model1.pkl
+COPY --from=pipeline dvc_pipeline/finalized_model1.pkl web_app/finalized_model1.pkl
 
  
-COPY  --from=pipeline feature1.pkl  web_app/feature1.pkl
+COPY  --from=pipeline dvc_pipeline/feature1.pkl  web_app/feature1.pkl
 
 COPY  app.py web_app/app.py
 COPY  templates web_app/templates
