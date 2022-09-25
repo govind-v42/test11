@@ -4,11 +4,13 @@ FROM python:3.10.6-buster as pipeline
 
 RUN mkdir dvc_pipeline
 
-COPY data/data3.csv dvc_pipeline/data/data3.csv
+COPY data/data2.csv dvc_pipeline/data/data2.csv
+
+COPY etlpipeline.py dvc_pipeline/etlpipeline.py
 
 COPY train-test.py dvc_pipeline/train-test.py
 
-COPY app.py dvc_pipeline/app.py
+# COPY app.py dvc_pipeline/app.py
 
 COPY requirements.txt dvc_pipeline/requirements.txt 
 
