@@ -1,3 +1,4 @@
+from cgi import test
 from copyreg import pickle
 from flask import Flask, request, render_template,session, app, jsonify
 import datetime
@@ -14,6 +15,7 @@ from nltk.stem import WordNetLemmatizer,PorterStemmer
 import re
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
+# from traintest import model_accuracy
 
 
 app = Flask(__name__)

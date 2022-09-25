@@ -1,17 +1,17 @@
 schema: '2.0'
 stages:
   split:
-    cmd: python train-test.py data/data5.csv
+    cmd: python traintest.py data/data5.csv
     deps:
     - path: data/data5.csv
       md5: 2990b73fa02b9df9d5a6f8e035f61f2e
       size: 1813270
     - path: train-test.py
-      md5: 477630c6aff8a1dbb6e0591ceff6a1c7
-      size: 6062
+      md5: 025d8e4dceea3ff1e43ca448b708821a
+      size: 5788
     outs:
     - path: feature1.pkl
-      md5: d784d9532947b7246aa30a931698cbac
+      md5: f8d9441e28f9841aa370c723651ac0e1
       size: 7583311
     - path: finalized_model1.pkl
       md5: 393b3983c27ec9f29784b76158df4d85
@@ -20,14 +20,14 @@ stages:
     cmd: python app.py finalized_model1.pkl feature1.pkl
     deps:
     - path: app.py
-      md5: 1e056d8707b456d4688e1ca3d66a4f38
-      size: 1720
+      md5: ee45e0c60e1b56b25ce1a71236003646
+      size: 2956
     - path: feature1.pkl
-      md5: 267dcb9b321bce2a4208e10600246ba5
-      size: 527112
+      md5: f8d9441e28f9841aa370c723651ac0e1
+      size: 7583311
     - path: finalized_model1.pkl
-      md5: aba20587098654cba50f27bdaf791fbb
-      size: 382667
+      md5: 393b3983c27ec9f29784b76158df4d85
+      size: 1371527
   etl:
     cmd: python etlpipeline.py data/data2.csv
     deps:
