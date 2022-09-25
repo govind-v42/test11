@@ -8,3 +8,5 @@ nltk
 flask
 mlflow
 petl
+pymongo
+pymongo[srv]
