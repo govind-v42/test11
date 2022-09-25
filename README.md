@@ -48,6 +48,8 @@
 
 3.	**Deployment.yaml** : This file contains the specifications, details of the number of pods, and Docker image location information for creating the Kubernetes cluster. 
 
+4. **templates/index.html** : HTML file to render prediction of tweet in flask app
+
 
 
 
