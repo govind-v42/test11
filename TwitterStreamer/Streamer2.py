@@ -94,7 +94,7 @@ class MyStream(tweepy.StreamingClient):
             
             self.num_tweets += 1
             
-            if self.num_tweets < 1000:
+            if self.num_tweets < 10000:
                 db.collection.insert_one(twitterfeed)
                 time.sleep(0.2)
                 return True

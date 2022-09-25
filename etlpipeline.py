@@ -17,6 +17,11 @@ collection = db['collection']
 
 df = pd.DataFrame(list(collection.find()))
 
+# data_pos = data[data['sentiment'] == 1]
+
+# data_neg = data[data['sentiment'] == 0]
+# data_pos = data_pos.sample(3000)
+# data_neg = data_neg.sample(3000)
 
 # DetectorFactory.seed = 0
 
@@ -38,15 +43,22 @@ tabled = etl.transform.headers.sortheader(tablec)
 
 print(etl.fieldnames(tabled))
 tablee = etl.convert(tabled, 'sentiment', 'replace', '4', '1')
+tabled = etl.select(tablee, 'sentiment', lambda v: v == '1')
+tablef = etl.head(tabled, 7500)
+tableg = etl.select(tablee, 'sentiment', lambda v: v == '0')
+tableh = etl.head(tableg, 7500)
+
+tablei = etl.cat(tablef, tableh)
+
 
 # tabled = etl.convert(tabled, 'sentiment', 'replace', 4, 1)
 
-print(tablee)
+print(tablei)
 # table2 = etl.cutout(table, '_id', 'sentiment')
 
 # print(table2)
 
-table3 = etl.cat(table1, tablee)
+table3 = etl.cat(table1, tablei)
 
 df = etl.todataframe(table3)
 
