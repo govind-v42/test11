@@ -8,11 +8,16 @@ COPY data/data2.csv dvc_pipeline/data/data2.csv
 
 COPY etlpipeline.py dvc_pipeline/etlpipeline.py
 
-COPY train-test.py dvc_pipeline/train-test.py
+
+COPY traintest.py dvc_pipeline/traintest.py
+
+COPY app.py   dvc_pipeline/app.py
 
 # COPY app.py dvc_pipeline/app.py
 
 COPY requirements.txt dvc_pipeline/requirements.txt 
+
+ 
 
 COPY dvc.yaml dvc_pipeline/dvc.yaml
 
@@ -27,7 +32,7 @@ RUN dvc init --no-scm
 RUN dvc repro
 
 
-#STAGE 2 docker: webapp
+# STAGE 2 docker: webapp
 
 FROM python:3.10.6-buster
 
@@ -41,13 +46,13 @@ COPY  templates web_app/templates
 
 
 
-COPY requirements.txt   web_app/requirements.txt
+# COPY requirements.txt   web_app/requirements.txt
 
-WORKDIR /web_app
-RUN pip install -r requirements.txt
+# WORKDIR /web_app
+# RUN pip install -r requirements.txt
 
 
-EXPOSE 5000
-CMD ["python", "app.py"]
+# EXPOSE 5000
+# CMD ["python", "app.py"]
 
 # RUN pip install flask
