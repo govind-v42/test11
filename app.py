@@ -16,6 +16,7 @@ import re
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 # from traintest import model_accuracy
+from traintest import modelname
 
 
 app = Flask(__name__)
@@ -76,7 +77,7 @@ def my_form_post():
         sentiment = "Negative"
     else:
         sentiment = "Positive"
-    json_str = json.dumps({'Prediction': sentiment, 'Tweet': processed})
+    json_str = json.dumps({'Prediction': sentiment, 'Tweet': processed, 'Model': modelname})
     
     return (json_str)
     

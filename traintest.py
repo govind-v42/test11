@@ -142,7 +142,7 @@ insights.sort(key=lambda x:x[-1], reverse=True)
 print(insights)
 print (insights[0][1])
 
-
+modelname = str(insights[0][0])
 
 
 X=data.results
