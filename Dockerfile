@@ -21,6 +21,7 @@ COPY requirements.txt dvc_pipeline/requirements.txt
 
 COPY dvc.yaml dvc_pipeline/dvc.yaml
 
+
 WORKDIR /dvc_pipeline
 
 RUN pip install -r requirements.txt
@@ -38,21 +39,23 @@ FROM python:3.10.6-buster
 
 RUN  mkdir -p web_app
 
-COPY  finalized_model1.pkl  web_app/finalized_model1.pkl
-COPY  feature1.pkl  web_app/feature1.pkl
+COPY --from=pipeline finalized_model1.pkl web_app/finalized_model1.pkl
+
+ 
+COPY  --from=pipeline feature1.pkl  web_app/feature1.pkl
 
 COPY  app.py web_app/app.py
 COPY  templates web_app/templates
 
 
 
-# COPY requirements.txt   web_app/requirements.txt
+COPY requirements.txt   web_app/requirements.txt
 
-# WORKDIR /web_app
-# RUN pip install -r requirements.txt
+WORKDIR /web_app
+RUN pip install -r requirements.txt
 
 
-# EXPOSE 5000
-# CMD ["python", "app.py"]
+EXPOSE 5000
+CMD ["python", "app.py"]
 
 # RUN pip install flask
