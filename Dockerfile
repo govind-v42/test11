@@ -45,7 +45,7 @@ COPY --from=pipeline dvc_pipeline/finalized_model1.pkl web_app/finalized_model1.
 COPY  --from=pipeline dvc_pipeline/feature1.pkl  web_app/feature1.pkl
 
 COPY  app.py web_app/app.py
-COPY  templates web_app/templates
+COPY  templates/index.html web_app/templates/index.html
 
 
 
