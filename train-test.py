@@ -1,3 +1,4 @@
+from ctypes.wintypes import SIZE
 from dataclasses import replace
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -15,7 +16,7 @@ from nltk.stem import WordNetLemmatizer
 # sklearn
 from sklearn.svm import LinearSVC
 from sklearn.naive_bayes import BernoulliNB
-from sklearn.linear_model import LogisticRegression
+
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import confusion_matrix, classification_report
@@ -29,30 +30,46 @@ import mlflow
 import mlflow.sklearn
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.model_selection import cross_val_score,KFold
 
-region = "Germany West Central"
-subscription_id = "ad24f89b-ce25-48f7-89af-5f742bad090d"
-resource_group = "Govind"
-workspace_name = "Twitter"
 
-azureml_mlflow_uri = f"azureml://germanywestcentral.api.azureml.ms/mlflow/v1.0/subscriptions/ad24f89b-ce25-48f7-89af-5f742bad090d/resourceGroups/Govind/providers/Microsoft.MachineLearningServices/workspaces/Twitter"
-mlflow.set_tracking_uri(azureml_mlflow_uri)
-experiment_name = 'mlflowdemo'
-mlflow.set_experiment(experiment_name)
+
+
+# region = "Germany West Central"
+# subscription_id = "ad24f89b-ce25-48f7-89af-5f742bad090d"
+# resource_group = "Govind"
+# workspace_name = "Twitter"
+# os.environ["MLFLOW_TRACKING_USERNAME"]= "11016106@stud.hochschule-heidelberg.de"
+
+# os.environ["MLFLOW_TRACKING_PASSWORD"] = "Medical1234"
+
+# os.environ['MLFLOW_TRACKING_INSECURE_TLS'] = 'true'
+# os.environ['MLFLOW_TRACKING_TOKEN'] = 
+# azureml_mlflow_uri = f"azureml://germanywestcentral.api.azureml.ms/mlflow/v1.0/subscriptions/ad24f89b-ce25-48f7-89af-5f742bad090d/resourceGroups/Govind/providers/Microsoft.MachineLearningServices/workspaces/Twitter"
+
+# mlflow.set_tracking_uri(azureml_mlflow_uri)
+
+# experiment_name = 'mlflowdemo'
+# mlflow.set_experiment(experiment_name)
+
+
+# mlflow.set_experiment(experiment_name="mlflowdemo")
+# region = "Germany West Central"
+# subscription_id = "ad24f89b-ce25-48f7-89af-5f742bad090d"
+# resource_group = "Govind"
+# workspace_name = "Twitter"
+
+# azureml_mlflow_uri = f"azureml://germanywestcentral.api.azureml.ms/mlflow/v1.0/subscriptions/ad24f89b-ce25-48f7-89af-5f742bad090d/resourceGroups/Govind/providers/Microsoft.MachineLearningServices/workspaces/Twitter"
+# mlflow.set_tracking_uri(azureml_mlflow_uri)
+
 
 if __name__ == "__main__":
-    # mlflow.set_experiment(experiment_name="mlflowdemo")
-    # region = "Germany West Central"
-    # subscription_id = "ad24f89b-ce25-48f7-89af-5f742bad090d"
-    # resource_group = "Govind"
-    # workspace_name = "Twitter"
-    
-    # azureml_mlflow_uri = f"azureml://germanywestcentral.api.azureml.ms/mlflow/v1.0/subscriptions/ad24f89b-ce25-48f7-89af-5f742bad090d/resourceGroups/Govind/providers/Microsoft.MachineLearningServices/workspaces/Twitter"
-    # mlflow.set_tracking_uri(azureml_mlflow_uri)
-    
-    
-    # Const
-    DATASET_COLUMNS = [ "results", "sentiment","lang"]
+    DATASET_COLUMNS = [ "results", "sentiment"]
     DATASET_ENCODING = "ISO-8859-1"
     TARGET_COL = 'sentiment'
     CSV_PATH = 'data/data5.csv'
@@ -61,218 +78,123 @@ if __name__ == "__main__":
     # X_TEST_PATH = 'split-data/y_train.csv'
     # Y_TRAIN_PATH = 'split-data/X_test.csv'
     # Y_TEST_PATH = 'split-data/y_test.csv'
-    # TOT_SIZE = 200000
+
     # TEST_SIZE = 0.2
 
     print("Read raw data")
-    df = pd.read_csv(CSV_PATH, encoding=DATASET_ENCODING, names=DATASET_COLUMNS, skiprows=1)
+    df = pd.read_csv(CSV_PATH, encoding=DATASET_ENCODING, names=DATASET_COLUMNS, skiprows=1,)
     # print(f'data set shape {df.shape}')
 
 
     data=df[['results','sentiment']]
 
-    # print(df.dtypes)
-    # lemmatizer = WordNetLemmatizer()
-    # stemmer = PorterStemmer()
-    # def preprocess(sentence):
-    #     sentence=str(sentence)
-    #     sentence = sentence.lower()
-    #     sentence=sentence.replace('{html}',"") 
-    #     cleanr = re.compile('<.*?>')
-    #     cleantext = re.sub(cleanr, '', sentence)
-    #     rem_url=re.sub(r'http\S+', '',cleantext)
-    #     rem_num = re.sub('[0-9]+', '', rem_url)
-    #     tokenizer = RegexpTokenizer(r'\w+')
-    #     tokens = tokenizer.tokenize(rem_num)  
-    #     filtered_words = [w for w in tokens if len(w) > 2 if not w in stopwords.words('english')]
-    #     stem_words=[stemmer.stem(w) for w in filtered_words]
-    #     lemma_words=[lemmatizer.lemmatize(w) for w in stem_words]
-    #     return " ".join(lemma_words)
+    data_pos = data[data['sentiment'] == 1]
 
-    # data['results'] = data['results'].apply(lambda text: preprocess(text))
+    data_neg = data[data['sentiment'] == 0]
+    data_pos = data_pos.sample(3000)
+    data_neg = data_neg.sample(3000)
+    dataset = pd.concat([data_pos, data_neg])
 
-    # data['target']= data['target'].astype(int)
+    X2 = dataset['results']
+    y2 = dataset['sentiment']
 
-    # print(data['target'] == 4)
+    X_train2, X_test2, y_train2, y_test2 = train_test_split(X2,y2,test_size = 0.20, random_state =42)
+    vectoriser2 = TfidfVectorizer(ngram_range=(1,2), max_features=500000, lowercase=False)
 
-    # data['target'] = data['target'].replace(4,1)
+    vectoriser2.fit(X_train2.values.astype('U'))
+    vectoriser2.fit(X_train2.values.astype('U'))
+    print('No. of feature_words2: ', len(vectoriser2.get_feature_names_out()))
 
-    # data_pos = data[data['target'] == 1]
+    X_train2= vectoriser2.transform(X_train2.values.astype('U'))
+    X_test2  = vectoriser2.transform(X_test2.values.astype('U'))
 
 
 
-    # # data_neg = data[data['target'] == 0]
-
-    # # data_pos = data_pos.iloc[:int(2500)]
-    # # data_neg = data_neg.iloc[:int(2500)]
-
-    # # dataset = pd.concat([data_pos, data_neg])
-
-    # # dataset['text']=dataset['text'].str.lower()
-
-    # # stopwordlist = ['a', 'about', 'above', 'after', 'again', 'ain', 'all', 'am', 'an',
-    # #              'and','any','are', 'as', 'at', 'be', 'because', 'been', 'before',
-    # #              'being', 'below', 'between','both', 'by', 'can', 'd', 'did', 'do',
-    # #              'does', 'doing', 'down', 'during', 'each','few', 'for', 'from',
-    # #              'further', 'had', 'has', 'have', 'having', 'he', 'her', 'here',
-    # #              'hers', 'herself', 'him', 'himself', 'his', 'how', 'i', 'if', 'in',
-    # #              'into','is', 'it', 'its', 'itself', 'just', 'll', 'm', 'ma',
-    # #              'me', 'more', 'most','my', 'myself', 'now', 'o', 'of', 'on', 'once',
-    # #              'only', 'or', 'other', 'our', 'ours','ourselves', 'out', 'own', 're','s', 'same', 'she', "shes", 'should', "shouldve",'so', 'some', 'such',
-    # #              't', 'than', 'that', "thatll", 'the', 'their', 'theirs', 'them',
-    # #              'themselves', 'then', 'there', 'these', 'they', 'this', 'those',
-    # #              'through', 'to', 'too','under', 'until', 'up', 've', 'very', 'was',
-    # #              'we', 'were', 'what', 'when', 'where','which','while', 'who', 'whom',
-    # #              'why', 'will', 'with', 'won', 'y', 'you', "youd","youll", "youre",
-    # #              "youve", 'your', 'yours', 'yourself', 'yourselves']
-
-    # # STOPWORDS = set(stopwordlist)
-    # # def cleaning_stopwords(text):
-    # #     return " ".join([word for word in str(text).split() if word not in STOPWORDS])
-    # # dataset['text'] = dataset['text'].apply(lambda text: cleaning_stopwords(text))
 
 
-    # # english_punctuations = string.punctuation
-    # # punctuations_list = english_punctuations
-    # # def cleaning_punctuations(text):
-    # #     translator = str.maketrans('', '', punctuations_list)
-    # #     return text.translate(translator)
-    # # dataset['text']= dataset['text'].apply(lambda x: cleaning_punctuations(x))
 
 
-    # # def cleaning_repeating_char(text):
-    # #     return re.sub(r'(.)1+', r'1', text)
-    # # dataset['text'] = dataset['text'].apply(lambda x: cleaning_repeating_char(x))
 
-    # # def cleaning_URLs(data):
-    # #     return re.sub('((www.[^s]+)|(https?://[^s]+))',' ',data)
-    # # dataset['text'] = dataset['text'].apply(lambda x: cleaning_URLs(x))
+    kf=KFold(n_splits=5)
+    log_reg_params = [{"C":0.01}, {"C":0.1}, {"C":1}, {"C":10}]
+    dec_tree_params = [ {"criterion": "entropy"}]
+    rand_for_params = [{"criterion": "gini"}, {"criterion": "entropy"}]
+    kneighbors_params = [{"n_neighbors":3}, {"n_neighbors":5}]
+    naive_bayes_params = [{}]
+    svc_params = [{"C":0.01}, {"C":0.1}, {"C":1}, {"C":10}]
 
-    # # def cleaning_numbers(data):
-    # #     return re.sub('[0-9]+', '', data)
-    # # dataset['text'] = dataset['text'].apply(lambda x: cleaning_numbers(x))
+    modelclasses = modelclasses = [
+        ["log regression", LogisticRegression, log_reg_params],
+        ["decision tree", DecisionTreeClassifier, dec_tree_params],
+        ["random forest", RandomForestClassifier, rand_for_params],
+        ["k neighbors", KNeighborsClassifier, kneighbors_params],
+        ["naive bayes", BernoulliNB, naive_bayes_params],
+        ["support vector machines", SVC, svc_params]
+    ]
+    insights = []
+    for modelname, Model, params_list in modelclasses:
+        for params in params_list:
+            model = Model(**params)
+            score=cross_val_score(model,X_train2,y_train2,cv=kf)
+            print("Cross Validation Scores are {}".format(score))
+            print("Average Cross Validation score :{}".format(score.mean()))
+            truescore = score.mean()
+            insights.append((modelname, model, params, truescore))
 
 
-    # # tokenizer = RegexpTokenizer(r'w+')
-    # # dataset['text'] = dataset['text'].apply(tokenizer.tokenize)
+    insights.sort(key=lambda x:x[-1], reverse=True)
 
+    print(insights)
+    print (insights[0][1])
 
-    # # st = nltk.PorterStemmer()
-    # # def stemming_on_text(data):
-    # #     text = [st.stem(word) for word in data]
-    # #     return data
-    # # dataset['text']= dataset['text'].apply(lambda x: stemming_on_text(x))
-
-    # # lm = nltk.WordNetLemmatizer()
-    # # def lemmatizer_on_text(data):
-    # #     text = [lm.lemmatize(word) for word in data]
-    # #     return data
-    # # dataset['text'] = dataset['text'].apply(lambda x: lemmatizer_on_text(x))
 
 
 
     X=data.results
     y=data.sentiment
 
-    # data_neg = data['text'][:800000]
 
-    # # Separating the 95% data for training data and 5% for testing data
+    # # # Separating the 95% data for training data and 5% for testing data
     X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.20, random_state =42)
-
-
-
-    # # print("Replace target col values")
-    # # df[TARGET_COL] = df[TARGET_COL].replace(0, 1)  # Negative
-    # # df[TARGET_COL] = df[TARGET_COL].replace(4, 0)  # Positive
-
-    # # os.makedirs(NEW_DIR, exist_ok=True)
-
-    # # print("Split dataset to train and test")
-    # # X_train, X_test, y_train, y_test = train_test_split(df.drop(TARGET_COL, axis=1), df[TARGET_COL],
-    # #                                                     test_size=TEST_SIZE, random_state=42,
-    # #                                                     stratify=df[TARGET_COL])
-
-    # # print("Save data sets to csv")
-    # # X_train.to_csv(X_TRAIN_PATH, index=False)
-    # # y_train.to_csv(X_TEST_PATH, index=False)
-    # # X_test.to_csv(Y_TRAIN_PATH, index=False)
-
-    # # # y_test will be saved outside of the repo - to prevent cheating.
-    # # y_test.to_csv(Y_TEST_PATH, index=False)
-
-
-
 
     vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=500000, lowercase=False)
 
     vectoriser.fit(X_train.values.astype('U'))
 
 
-    print('No. of feature_words: ', len(vectoriser.get_feature_names()))
+    print('No. of feature_words: ', len(vectoriser.get_feature_names_out()))
 
     X_train = vectoriser.transform(X_train.values.astype('U'))
     X_test  = vectoriser.transform(X_test.values.astype('U'))
 
     pickle.dump(vectoriser,open("feature1.pkl","wb"))
 
-    def model_Evaluate(model):
-        # Predict values for Test dataset
-        y_pred = model.predict(X_test)
-        # Print the evaluation metrics for the dataset.
-        print(classification_report(y_test, y_pred))
-        # Compute and plot the Confusion matrix
-        cf_matrix = confusion_matrix(y_test, y_pred)
-        categories = ['Neutral','Positive']
-        group_names = ['True Neg','False Pos', 'False Neg','True Pos']
-        group_percentages = ['{0:.2%}'.format(value) for value in cf_matrix.flatten() / np.sum(cf_matrix)]
-        labels = [f'{v1}n{v2}' for v1, v2 in zip(group_names,group_percentages)]
-        labels = np.asarray(labels).reshape(-2,2)
-        sns.heatmap(cf_matrix, cmap = 'Blues',fmt = '', xticklabels = categories, yticklabels = categories)
-        plt.xlabel("Predicted values", fontdict = {'size':14}, labelpad = 10)
-        plt.ylabel("Actual values" , fontdict = {'size':14}, labelpad = 10)
-        plt.title ("Confusion Matrix", fontdict = {'size':18}, pad = 20)
-        plt.show()
-    
-    
-    
-    # classifier = KNeighborsClassifier(n_neighbors=7,algorithm='brute') #Using brute-force algorithm for quicker computation.
-    # classifier.fit(X_train, y_train) #Fitting the built-in sklearn classifier on our training data
-    # y_pred1 = classifier.predict(X_test)
-    # model_accuracy = accuracy_score(y_test, y_pred1)
-    
-    BNBmodel = BernoulliNB()
-    BNBmodel.fit(X_train, y_train)
-    y_pred1 = BNBmodel.predict(X_test)
+    model = insights[0][1]
+
+    model.fit( X_train, y_train)
+    y_pred1 = model.predict(X_test)
     model_accuracy = accuracy_score(y_test, y_pred1)
-    
-    with mlflow.start_run() as mlflow_run:
-        mlflow.log_metric("Accuracy", model_accuracy)
-        mlflow.sklearn.log_model(BNBmodel, "model")
+
+    print(model_accuracy)
+
         
-    
-    # tweet = ['Queen was very very happy and a very sweet sunshine']
-    # lemmatizer = WordNetLemmatizer()
-    # stemmer = PorterStemmer() 
-    # def preprocess(sentence):
-    #     sentence=str(sentence)
-    #     sentence = sentence.lower()
-    #     sentence=sentence.replace('{html}',"") 
-    #     cleanr = re.compile('<.*?>')
-    #     cleantext = re.sub(cleanr, '', sentence)
-    #     rem_url=re.sub(r'http\S+', '',cleantext)
-    #     rem_num = re.sub('[0-9]+', '', rem_url)
-    #     tokenizer = RegexpTokenizer(r'\w+')
-    #     tokens = tokenizer.tokenize(rem_num)  
-    #     filtered_words = [w for w in tokens if len(w) > 2 if not w in stopwords.words('english')]
-    #     stem_words=[stemmer.stem(w) for w in filtered_words]
-    #     lemma_words=[lemmatizer.lemmatize(w) for w in stem_words]
-    #     return " ".join(lemma_words)
-    # preprocessed = preprocess(tweet)
-    # y_pred2 = BNBmodel.predict(vectoriser.transform(preprocessed))
-    # print(y_pred2)
-    # model_Evaluate(BNBmodel)
-
-
     filename = 'finalized_model1.pkl'
-    pickle.dump(BNBmodel, open(filename, 'wb'))
+    pickle.dump(model, open(filename, 'wb'))
+
+
+
+
+
+    # with mlflow.start_run() as mlflow_run:
+    #     mlflow.log_metric("Accuracy", model_accuracy)
+    #     mlflow.sklearn.log_model(model, "model")
+        
+        
+
+
+
+
+
+
+    
 
