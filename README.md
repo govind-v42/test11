@@ -2,7 +2,7 @@
 
 ## **About the Project**:
 
-### The project has been undertaken to get streaming data (tweets) from twitter and create a deep learning model that would analyze the sentiment of the tweets. The work focuses solely on English language and the final stage of the work involves a web-app that would return the sentiment of a tweet the user inputs. The entire pipeline uses concepts such as data-version-control, containerization, and Kubernetes cluster deployment. The scripts can be broadly classified into two:- a streaming script (Streamer2.py) that runs round the clock to get the tweets, and the pipeline involving an ETL-job, a model-selection and automatic retraining part, and web-app part. All the scripts can be run locally. The Model accuracy tracking using Mlflow in the train-test.py requires authentication for Azure MLstudio. Set up new tracking uri if required. Interactive Authentication is not supported by the workflow design. Hence, MLStudio uri may be commented for the final execution of pipeline.  
+### The project has been undertaken to get streaming data (tweets) from twitter and create a deep learning model that would analyze the sentiment of the tweets. The work focuses solely on English language and the final output of the work is a web-app that would display the sentiment when the user inputs a tweet. The entire pipeline uses concepts such as data-version-control, containerization, and Kubernetes cluster deployment. The scripts can be broadly classified into two:- a streaming script (Streamer2.py) that can run round the clock to get the tweets, and the pipeline involving an ETL-job, a model-selection along with automatic retraining cript, and web-app part. All the scripts can be run locally. The Model accuracy tracking using Mlflow in the train-test.py requires authentication for Azure MLstudio. Set up new tracking uri if required. Also, Interactive Authentication with Azure MLStudio is not supported by the workflow design. Hence, MLStudio uri may be commented for the final execution of pipeline.  
 
 ## **Built With**: 
 - tweepy
@@ -15,6 +15,7 @@
 - dvc
 - docker
 - minikube
+- pymongo
 
 ## **Pre-Requisites**
 ### Libraries to be installed:
@@ -23,7 +24,7 @@
 - pip install sklearn
 - pip install nltk
 - pip install tweepy
-- pip install pymongo
+- pip install pymongo[srv]
 - pip install petl
 - pip install mlflow
 - pip install flask
