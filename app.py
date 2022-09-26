@@ -9,13 +9,14 @@ from sklearn.naive_bayes import BernoulliNB
 from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 import pickle
 import nltk
-nltk.download('stopwords')
-nltk.download('wordnet')
+# nltk.download('stopwords')
+# nltk.download('wordnet')
 from nltk.stem import WordNetLemmatizer,PorterStemmer
 import re
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 # from traintest import model_accuracy
+
 
 
 
@@ -63,8 +64,8 @@ def my_form_post():
         rem_num = re.sub('[0-9]+', '', rem_url)
         tokenizer = RegexpTokenizer(r'\w+')
         tokens = tokenizer.tokenize(rem_num)  
-        filtered_words = [w for w in tokens if len(w) > 2 if not w in stopwords.words('english')]
-        stem_words=[stemmer.stem(w) for w in filtered_words]
+        # filtered_words = [w for w in tokens if len(w) > 2 if not w in stopwords.words('english')]
+        stem_words=[stemmer.stem(w) for w in tokens]
         # lemma_words=[lemmatizer.lemmatize(w) for w in stem_words]
         return " ".join(stem_words)
     
