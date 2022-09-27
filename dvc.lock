@@ -7,11 +7,11 @@ stages:
       md5: 19065b26a317259c9ad03fb028a5ac62
       size: 2135620
     - path: traintest.py
-      md5: 9e21a48a68305d9d3be264c2a0dd823f
-      size: 5525
+      md5: 85faefc9bcde8939668f94c8482e4a0c
+      size: 5819
     outs:
     - path: feature1.pkl
-      md5: 2b4e073854cfcb47f5bd9f767a4459ea
+      md5: 50159f779f0cba5ac1760b7391994d63
       size: 8764177
     - path: finalized_model1.pkl
       md5: f0d9be81be6335c788adb83364c04411
