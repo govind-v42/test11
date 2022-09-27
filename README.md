@@ -51,6 +51,8 @@
 
 4. **templates/index.html** : HTML file to render prediction of tweet in flask app
 
+5. **data/data2.csv** : This is a truncated version of Static Twitter sentiment annotated dataset called Sentiment 140. Used in the pipeline to concatenate with dynamic incoming tweets and create a resulting hybrid dataset for model training and testing.  
+
 
 
 
