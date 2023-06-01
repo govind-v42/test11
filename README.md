@@ -37,7 +37,7 @@
 
 3.	**etlpipeline.py**: Extracts the data stored in MongoDB cluster and transforms the data using petl. In the transformation stage, the streaming tweets are combined with data from Sentiment140 dataset and a hybrid dataset for train-test is created. The data is then loaded into a csv format at root/data folder. 
 
-4.	**Train-test.py** : This module takes in the hybrid dataset and splits the data for training and testing. A Naïve Bayes Bernoulli Classifier model is fitted to the data and the test stage prediction is evaluated. The accuracy score of the model is uploaded in Azure ML Studio using mlflow. The fitted model and vectorizer are dumped into pickle files. 
+4.	**Train-test.py** : This module takes in the hybrid dataset and splits the data for training and testing. Different models (Naive Bayes, K-Neighbours, SVC, Random Forest, Logistic Regression) are fitted to the data and the test stage prediction is evaluated. The accuracy score of the model is uploaded in Azure ML Studio using mlflow. The fitted model and vectorizer are dumped into pickle files. 
 
 5.	**App.py**:- Creates a web-app based on python-flask which would take a tweet as an input and renders prediction and passed tweet as the final visual. This module takes in the pickle files from the previous stage
 
